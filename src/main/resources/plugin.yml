@@ -1,0 +1,4 @@
+name: Clockgame
+version: '${project.version}'
+main: dev.jb0s.clockgame.ClockgamePlugin
+api-version: '1.18'
