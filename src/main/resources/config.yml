@@ -1,6 +1,6 @@
 # Documentation:
 # Every timer must have a unique name.
-# Timestamps are in military time because Java.
+# Timestamps are in military time because Java. (Format is HH:mm:ss)
 # The oneTick flag makes every command execute in a single tick, otherwise it waits a tick between each command.
 # That's it. GLHF
 
