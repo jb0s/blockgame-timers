@@ -3,6 +3,6 @@ version: '${project.version}'
 main: dev.jb0s.clockgame.ClockgamePlugin
 api-version: '1.18'
 commands:
-  myrkheim:
-    aliases: ['myrk']
-    description: 'Myrkheim developer commands'
+  reloadtimers:
+    aliases: ['rltimers', 'rlt']
+    description: 'Reloads all timers.'

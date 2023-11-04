@@ -1,13 +1,12 @@
-# Interval is in ticks.
-# 20 ticks = 1 second
+# Documentation:
+# Every timer must have a unique name.
+# Timestamps are in military time because Java.
+# The oneTick flag makes every command execute in a single tick, otherwise it waits a tick between each command.
+# That's it. GLHF
 
 timers:
   sample-1:
-    interval: 40
+    timestamp: '13:00'
+    oneTick: false
     commands:
-      - 'tellraw PirateSoftware {"text":"you smell"}'
-  sample-2:
-    interval: 40
-    commands:
-      - 'tellraw notIrma {"text":"you dont smell"}'
-      - 'tellraw jakm {"text":"you dont smell"}'
+      - 'tellraw notIrma {"text":"you smell"}'
