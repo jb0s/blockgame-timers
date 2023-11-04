@@ -1,0 +1,13 @@
+# Interval is in ticks.
+# 20 ticks = 1 second
+
+timers:
+  sample-1:
+    interval: 40
+    commands:
+      - 'tellraw PirateSoftware {"text":"you smell"}'
+  sample-2:
+    interval: 40
+    commands:
+      - 'tellraw notIrma {"text":"you dont smell"}'
+      - 'tellraw jakm {"text":"you dont smell"}'
