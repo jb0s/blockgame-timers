@@ -24,7 +24,7 @@ public class ReloadCommand implements CommandExecutor {
 
             // funny secret
             if(!player.getName().equals("PirateSoftware")) {
-                player.sendMessage(ChatColor.RED + "You're a goblin.");
+                player.sendMessage(ChatColor.RED + "Zultralord smells.");
             }
 
             return true;
