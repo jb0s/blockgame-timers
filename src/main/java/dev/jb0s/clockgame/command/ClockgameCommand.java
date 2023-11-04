@@ -20,7 +20,7 @@ public class ClockgameCommand implements CommandExecutor {
         Player player = (Player) commandSender;
 
         // Only server operators may execute this command
-        if(!player.isOp()) {
+        if(!player.isOp() && !player.hasPermission("clockgame.reload")) {
             player.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
 
             // funny secret
