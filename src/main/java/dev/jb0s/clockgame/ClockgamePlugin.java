@@ -81,6 +81,9 @@ public final class ClockgamePlugin extends JavaPlugin {
             if(value != null) {
                 LocalTime time = LocalTime.parse(value, DateTimeFormatter.ofPattern("HH:mm:ss"));
                 timerMap.put(key, time);
+
+                // Log success
+                getLogger().info(String.format("Successfully loaded timer %s", key));
             }
             else {
                 // Failed to parse the timestamp, skill issue
