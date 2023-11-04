@@ -24,7 +24,7 @@ public final class ClockgamePlugin extends JavaPlugin {
     // Config path flags
     private final String TIMER_TIMESTAMP_PATH = "timers.%s.timestamp";
     private final String TIMER_COMMANDS_PATH = "timers.%s.commands";
-    private final String TIMER_ONETICK_PATH = "timers.%s.oneTick";
+    private final String TIMER_NUMTICKS_PATH = "timers.%s.numTicks";
 
     @Override
     public void onEnable() {
@@ -117,10 +117,10 @@ public final class ClockgamePlugin extends JavaPlugin {
                 }
 
                 String commandsPath = String.format(TIMER_COMMANDS_PATH, key);
-                String onetickPath = String.format(TIMER_ONETICK_PATH, key);
+                String numTicksPath = String.format(TIMER_NUMTICKS_PATH, key);
 
                 List<String> commands = config.getStringList(commandsPath);
-                boolean oneTick = config.getBoolean(onetickPath);
+                long numTicks = config.getLong(numTicksPath);
 
                 // Execute all commands
                 ConsoleCommandSender console = getServer().getConsoleSender();
@@ -128,11 +128,12 @@ public final class ClockgamePlugin extends JavaPlugin {
                     String cmd = commands.get(i);
 
                     // Instant if oneTick is enabled. Otherwise, wait a tick per command.
-                    if(oneTick) {
+                    if(numTicks <= 0L) {
                         Bukkit.dispatchCommand(console, cmd);
                     }
                     else {
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> Bukkit.dispatchCommand(console, cmd), i);
+                        long delay = numTicks * i;
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> Bukkit.dispatchCommand(console, cmd), delay);
                     }
 
                     // Put the timer on cooldown so that it cannot execute any further while the seconds still match.

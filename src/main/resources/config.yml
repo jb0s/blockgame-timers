@@ -1,12 +1,12 @@
 # Documentation:
 # Every timer must have a unique name.
 # Timestamps are in military time because Java. (Format is HH:mm:ss)
-# The oneTick flag makes every command execute in a single tick, otherwise it waits a tick between each command.
+# The numTicks flag determines how many ticks to wait inbetween commands. 0 ticks = instant.
 # That's it. GLHF
 
 timers:
   sample-1:
     timestamp: '13:00:00'
-    oneTick: false
+    numTicks: 1
     commands:
       - 'tellraw notIrma {"text":"you smell"}'
