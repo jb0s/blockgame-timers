@@ -32,7 +32,7 @@ public class ReloadCommand implements CommandExecutor {
 
         // Player passed server operator checks, reload
         plugin.loadTimers();
-        player.sendMessage(String.format(ChatColor.GREEN + "Reloaded %d timer(s).", plugin.getTimerMap().size()));
+        player.sendMessage(String.format(ChatColor.GREEN + "Reloaded %d timer(s).", plugin.getNumTimers()));
         return true;
     }
 }

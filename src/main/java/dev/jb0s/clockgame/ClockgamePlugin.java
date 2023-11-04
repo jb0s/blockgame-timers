@@ -1,6 +1,5 @@
 package dev.jb0s.clockgame;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,15 +8,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public final class ClockgamePlugin extends JavaPlugin {
     private FileConfiguration config;
-
-    @Getter
     private final HashMap<String, LocalTime> timerMap = new HashMap<>();
+    private final ArrayList<String> timersOnCooldown = new ArrayList<>();
 
     // Config path flags
     private final String TIMER_TIMESTAMP_PATH = "timers.%s.timestamp";
@@ -27,7 +26,7 @@ public final class ClockgamePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        config = getConfig();
+        loadConfig();
 
         // Register commands
         Objects.requireNonNull(getCommand("reloadtimers")).setExecutor(new ReloadCommand(this));
@@ -40,9 +39,19 @@ public final class ClockgamePlugin extends JavaPlugin {
     }
 
     /**
+     * Simple function to (re)load the config.
+     * I put it in a method to prevent duplicated code.
+     */
+    private void loadConfig() {
+        reloadConfig();
+        config = getConfig();
+    }
+
+    /**
      * (Re)loads the timer data from config.yml
      */
     public void loadTimers() {
+        loadConfig();
         timerMap.clear();
 
         ConfigurationSection timerSection = config.getConfigurationSection("timers");
@@ -71,6 +80,17 @@ public final class ClockgamePlugin extends JavaPlugin {
                 getLogger().warning(String.format("Could not load timer %s due to a malformed timestamp value.", key));
             }
         }
+
+        // Log success
+        getLogger().info(String.format("Loaded %d timers.", getNumTimers()));
+    }
+
+    /**
+     * Calculates the total amount of timers.
+     * @return Total amount of timers.
+     */
+    public int getNumTimers() {
+        return timerMap.size();
     }
 
     private void tick() {
@@ -79,7 +99,13 @@ public final class ClockgamePlugin extends JavaPlugin {
             LocalTime now = LocalTime.now();
 
             // The time is now.
-            if(time == now) {
+            if(now.toSecondOfDay() == time.toSecondOfDay()) {
+
+                // If this timer has already executed in a previous tick this second, stop now
+                if(timersOnCooldown.contains(key)) {
+                    continue;
+                }
+
                 String commandsPath = String.format(TIMER_COMMANDS_PATH, key);
                 String onetickPath = String.format(TIMER_ONETICK_PATH, key);
 
@@ -98,7 +124,14 @@ public final class ClockgamePlugin extends JavaPlugin {
                     else {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> Bukkit.dispatchCommand(console, cmd), i);
                     }
+
+                    // Put the timer on cooldown so that it cannot execute any further while the seconds still match.
+                    timersOnCooldown.add(key);
                 }
+            }
+            else {
+                // We can remove this from cooldown now, the seconds no longer match.
+                timersOnCooldown.remove(key);
             }
         }
     }
