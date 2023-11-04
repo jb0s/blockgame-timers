@@ -1,7 +1,10 @@
 package dev.jb0s.clockgame;
 
+import dev.jb0s.clockgame.command.ClockgameCommand;
+import dev.jb0s.clockgame.command.ClockgameTabComplete;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +32,11 @@ public final class ClockgamePlugin extends JavaPlugin {
         loadConfig();
 
         // Register commands
-        Objects.requireNonNull(getCommand("reloadtimers")).setExecutor(new ReloadCommand(this));
+        PluginCommand cmd = getCommand("clockgame");
+        if(cmd != null) {
+            cmd.setExecutor(new ClockgameCommand(this));
+            cmd.setTabCompleter(new ClockgameTabComplete());
+        }
 
         // Populate timer list
         loadTimers();

@@ -3,6 +3,5 @@ version: '${project.version}'
 main: dev.jb0s.clockgame.ClockgamePlugin
 api-version: '1.18'
 commands:
-  reloadtimers:
-    aliases: ['rltimers', 'rlt']
-    description: 'Reloads all timers.'
+  clockgame:
+    description: 'Admin commands for Clockgame plugin'

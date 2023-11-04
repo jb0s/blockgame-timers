@@ -1,5 +1,6 @@
-package dev.jb0s.clockgame;
+package dev.jb0s.clockgame.command;
 
+import dev.jb0s.clockgame.ClockgamePlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,10 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ReloadCommand implements CommandExecutor {
+public class ClockgameCommand implements CommandExecutor {
     private final ClockgamePlugin plugin;
 
-    public ReloadCommand(ClockgamePlugin plugin) {
+    public ClockgameCommand(ClockgamePlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -30,9 +31,14 @@ public class ReloadCommand implements CommandExecutor {
             return true;
         }
 
-        // Player passed server operator checks, reload
-        plugin.loadTimers();
-        player.sendMessage(String.format(ChatColor.GREEN + "Reloaded %d timer(s).", plugin.getNumTimers()));
+        if(strings.length > 0 && strings[0].equals("reload")){
+            // Player passed server operator checks, reload
+            plugin.loadTimers();
+            player.sendMessage(String.format(ChatColor.GREEN + "Reloaded %d timer(s).", plugin.getNumTimers()));
+            return true;
+        }
+
+        player.sendMessage(ChatColor.RED + "Unknown subcommand.");
         return true;
     }
 }
